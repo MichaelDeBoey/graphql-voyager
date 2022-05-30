@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as classNames from 'classnames';
 
 import './Argument.css';
 
@@ -16,7 +15,8 @@ export default class Argument extends React.Component<ArgumentProps> {
   render() {
     const { arg, expanded, onTypeLink } = this.props;
     return (
-      <span className={classNames('arg-wrap', { '-expanded': expanded })}>
+      <span className={`arg-wrap ${expanded ? '-expanded' : ''}`}>
+        <Markdown text={arg.description} className="arg-description" />
         <span className="arg">
           <span className="arg-name">{arg.name}</span>
           <WrappedTypeName container={arg} onTypeLink={onTypeLink} />
@@ -27,7 +27,6 @@ export default class Argument extends React.Component<ArgumentProps> {
             </span>
           )}
         </span>
-        <Markdown text={arg.description} className="arg-description" />
       </span>
     );
   }

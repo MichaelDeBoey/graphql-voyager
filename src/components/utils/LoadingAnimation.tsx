@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as classNames from 'classnames';
 
 import './LoadingAnimation.css';
 
@@ -9,13 +8,11 @@ interface LoadingAnimationProps {
   loading: boolean;
 }
 
-export default class LoadingAnimation extends React.Component<
-  LoadingAnimationProps
-> {
+export default class LoadingAnimation extends React.Component<LoadingAnimationProps> {
   render() {
     const { loading } = this.props;
     return (
-      <div className={classNames({ 'loading-box': true, visible: loading })}>
+      <div className={`loading-box ${loading ? 'visible' : ''}`}>
         <span className="loading-animation">
           <VoyagerIcon />
           <h1> Transmitting... </h1>

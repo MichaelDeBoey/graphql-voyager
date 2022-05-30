@@ -1,22 +1,17 @@
 # GraphQL Voyager
 
-[![jsDelivr](https://data.jsdelivr.com/v1/package/npm/graphql-voyager/badge)](https://www.jsdelivr.com/package/npm/graphql-voyager)
-[![David](https://img.shields.io/david/APIs-guru/graphql-voyager.svg)](https://david-dm.org/APIs-guru/graphql-voyager)
-[![David](https://img.shields.io/david/dev/APIs-guru/graphql-voyager.svg)](https://david-dm.org/APIs-guru/graphql-voyager?type=dev)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
 ![graphql-voyager logo](./docs/cover.png)
 
 Represent any GraphQL API as an interactive graph. It's time to finally see **the graph** behind GraphQL.
-You can also explore number of public GraphQL APIs from [our list](https://github.com/APIs-guru/graphql-apis).
+You can also explore number of public GraphQL APIs from [our list](https://github.com/IvanGoncharov/graphql-apis).
 
 > With graphql-voyager you can visually explore your GraphQL API as an interactive graph. This is a great tool when designing or discussing your data model. It includes multiple example GraphQL schemas and also allows you to connect it to your own GraphQL endpoint. What are you waiting for, explore your API!
 
 _[GraphQL Weekly #42](https://graphqlweekly.com/issues/42)_
 
-## [Live Demo](https://apis.guru/graphql-voyager/)
+## [Live Demo](https://IvanGoncharov.github.io/graphql-voyager/)
 
-[![voyager demo](./docs/demo-gif.gif)](https://apis.guru/graphql-voyager/)
+[![voyager demo](./docs/demo-gif.gif)](https://IvanGoncharov.github.io/graphql-voyager/)
 
 ## Features
 
@@ -62,7 +57,7 @@ The signature of the `init` function:
 
 You can get GraphQL Voyager bundle from the following places:
 
-- jsDelivr CDN
+- [![jsDelivr](https://data.jsdelivr.com/v1/package/npm/graphql-voyager/badge)](https://www.jsdelivr.com/package/npm/graphql-voyager)
   - some exact version - https://cdn.jsdelivr.net/npm/graphql-voyager/v1.0.0-rc.15/voyager.min.js
   - latest version - https://cdn.jsdelivr.net/npm/graphql-voyager/dist/voyager.min.js
 - from `dist` folder of the npm package `graphql-voyager`
@@ -115,7 +110,6 @@ And then use it:
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Voyager } from 'graphql-voyager';
-import fetch from 'isomorphic-fetch';
 
 function introspectionProvider(query) {
   return fetch(window.location.origin + '/graphql', {
@@ -197,30 +191,6 @@ const init = async () => {
 };
 
 init();
-```
-
-#### Legacy Versions
-
-```js
-import hapi from 'hapi';
-import { hapiLegacy as voyagerMiddleware } from 'graphql-voyager/middleware';
-
-const server = new Hapi.Server();
-
-server.connection({
-  port: 3001,
-});
-
-server.register(
-  {
-    register: voyagerMiddleware,
-    options: {
-      path: '/voyager',
-      endpointUrl: '/graphql',
-    },
-  },
-  () => server.start(),
-);
 ```
 
 ### Koa

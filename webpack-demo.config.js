@@ -1,10 +1,9 @@
+const path = require('node:path');
+
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-
-const root = require('./helpers').root;
-const VERSION = JSON.stringify(require('../package.json').version);
 
 module.exports = function (_, { mode }) {
   return {
@@ -14,15 +13,15 @@ module.exports = function (_, { mode }) {
     resolve: {
       extensions: ['.ts', '.tsx', '.mjs', '.js', '.json', '.css', '.svg'],
     },
-    entry: ['./src/polyfills.ts', './demo/index.tsx'],
+    entry: './demo/index.tsx',
     devServer: {
-      contentBase: root('demo'),
+      contentBase: path.resolve(__dirname, 'demo'),
       watchContentBase: true,
       port: 9090,
       stats: 'errors-only',
     },
     output: {
-      path: root('demo-dist'),
+      path: path.resolve(__dirname, 'demo-dist'),
       filename: '[name].js',
       sourceMapFilename: '[name].[id].map',
     },
@@ -66,16 +65,6 @@ module.exports = function (_, { mode }) {
           test: /\.svg$/,
           use: [
             {
-              loader: 'babel-loader',
-              options: {
-                plugins: [
-                  '@babel/plugin-transform-block-scoping',
-                  '@babel/plugin-transform-arrow-functions',
-                  '@babel/plugin-transform-destructuring',
-                ],
-              },
-            },
-            {
               loader: 'react-svg-loader',
               options: {
                 jsx: false,
@@ -96,10 +85,6 @@ module.exports = function (_, { mode }) {
             filename: '[name].worker.js',
           },
         },
-      }),
-
-      new webpack.DefinePlugin({
-        VERSION: VERSION,
       }),
 
       new HtmlWebpackPlugin({

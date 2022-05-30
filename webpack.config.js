@@ -1,16 +1,16 @@
+const path = require('node:path');
+
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const nodeExternals = require('webpack-node-externals')({
   whitelist: ['viz.js/full.render.js'],
 });
 
-const root = require('./helpers').root;
-const VERSION = JSON.stringify(require('../package.json').version);
-
+const packageJSON = require('./package.json');
 const BANNER = `GraphQL Voyager - Represent any GraphQL API as an interactive graph
 -------------------------------------------------------------
-  Version: ${VERSION}
-  Repo: https://github.com/APIs-guru/graphql-voyager`;
+  Version: ${packageJSON.version}
+  Repo: ${packageJSON.repository.url}`;
 
 module.exports = (env = {}, { mode }) => ({
   performance: {
@@ -23,9 +23,6 @@ module.exports = (env = {}, { mode }) => ({
 
   resolve: {
     extensions: ['.ts', '.tsx', '.mjs', '.js', '.json', '.css', '.svg'],
-    alias: {
-      clipboard: 'clipboard/dist/clipboard.min.js',
-    },
   },
 
   externals: env.lib
@@ -44,9 +41,9 @@ module.exports = (env = {}, { mode }) => ({
           amd: 'react-dom',
         },
       },
-  entry: ['./src/polyfills.ts', './src/index.tsx'],
+  entry: './src/index.tsx',
   output: {
-    path: root('dist'),
+    path: path.resolve(__dirname, 'dist'),
     filename: env.lib ? 'voyager.lib.js' : 'voyager.min.js',
     sourceMapFilename: '[file].map',
     library: 'GraphQLVoyager',
@@ -95,17 +92,6 @@ module.exports = (env = {}, { mode }) => ({
         test: /\.svg$/,
         use: [
           {
-            loader: 'babel-loader',
-            options: {
-              plugins: [
-                '@babel/plugin-transform-classes',
-                '@babel/plugin-transform-block-scoping',
-                '@babel/plugin-transform-arrow-functions',
-                '@babel/plugin-transform-destructuring',
-              ],
-            },
-          },
-          {
             loader: 'react-svg-loader',
             options: {
               jsx: false,
@@ -120,10 +106,6 @@ module.exports = (env = {}, { mode }) => ({
   },
 
   plugins: [
-    new webpack.DefinePlugin({
-      VERSION: VERSION,
-    }),
-
     new ExtractTextPlugin({
       filename: 'voyager.css',
       allChunks: true,

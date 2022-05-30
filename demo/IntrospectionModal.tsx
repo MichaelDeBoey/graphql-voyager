@@ -1,11 +1,10 @@
 import * as React from 'react';
-import * as classNames from 'classnames';
 
+import Grid from '@material-ui/core/Grid';
 import Modal from '@material-ui/core/Modal';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Button from '@material-ui/core/Button';
-import Clipboard from 'react-clipboard.js';
 
 import {
   buildSchema,
@@ -34,9 +33,7 @@ const initialConfig = {
   jsonText: null,
 };
 
-export class IntrospectionModal extends React.Component<
-  IntrospectionModalProps
-> {
+export class IntrospectionModal extends React.Component<IntrospectionModalProps> {
   state = {
     submitted: initialConfig,
     current: initialConfig,
@@ -58,7 +55,8 @@ export class IntrospectionModal extends React.Component<
     this.changeCurrent({ inputType: tabNames[activeTab] });
   };
 
-  copy() {
+  async copyIntrospectionQuery() {
+    await navigator.clipboard.writeText(getIntrospectionQuery());
     this.setState({ recentlyCopied: true });
     setTimeout(() => {
       this.setState({ recentlyCopied: false });
@@ -155,9 +153,7 @@ export class IntrospectionModal extends React.Component<
         {presetNames.map((name) => (
           <div
             key={name}
-            className={classNames('preset-card', {
-              '-active': name === activePreset,
-            })}
+            className={`preset-card ${name === activePreset ? '-active' : ''}`}
             onClick={() => this.handlePresetChange(name)}
           >
             <h2>{name}</h2>
@@ -187,17 +183,15 @@ export class IntrospectionModal extends React.Component<
           Run the introspection query against a GraphQL endpoint. Paste the
           result into the textarea below to view the model relationships.
         </div>
-        <Clipboard
-          component="a"
-          className="copy-button"
-          options={{ container: this.modalRef.current }}
-          data-clipboard-text={getIntrospectionQuery()}
-          onClick={() => this.copy()}
-        >
-          <Button color="primary" size="small">
+        <Grid container justify="center">
+          <Button
+            color="primary"
+            size="small"
+            onClick={async () => this.copyIntrospectionQuery()}
+          >
             {recentlyCopied ? 'Copied!' : 'Copy Introspection Query'}
           </Button>
-        </Clipboard>
+        </Grid>
         <textarea
           value={jsonText || ''}
           placeholder="Paste Introspection Here"
